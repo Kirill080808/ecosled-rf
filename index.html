@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЭкоСлед-РФ — Калькулятор углеродного следа для России</title>
+<meta name="description" content="Рассчитайте свой индивидуальный углеродный след с использованием российских коэффициентов. Узнайте, как снизить выбросы CO₂.">
+<meta name="keywords" content="углеродный след, экология, CO2, климат, Россия, калькулятор выбросов">
+<meta name="author" content="Тихонов Кирилл">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dark: #1a3328;
+  --primary: #2d6a4f;
+  --mid: #40916c;
+  --accent: #52b788;
+  --light: #95d5b2;
+  --pale: #d8f3dc;
+  --bg: #f0f4f0;
+  --white: #ffffff;
+  --text: #1b2d24;
+  --muted: #5a7a6a;
+  --warn: #e9c46a;
+  --danger: #e76f51;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #1a3328 0%, #2d6a4f 50%, #40916c 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.particles { position: absolute; inset: 0; pointer-events: none; }
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(149, 213, 178, 0.15);
+  animation: float linear infinite;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(149,213,178,0.2);
+  border: 1px solid rgba(149,213,178,0.4);
+  color: var(--light);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+  animation: fadeDown 0.8s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 1rem;
+  animation: fadeDown 0.8s 0.15s ease both;
+}
+.hero-title span { color: var(--light); }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255,255,255,0.8);
+  max-width: 550px;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  animation: fadeDown 0.8s 0.3s ease both;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 1.2rem 2.4rem;
+  margin-bottom: 2.5rem;
+  animation: fadeDown 0.8s 0.45s ease both;
+}
+.hero-stat .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--light);
+  display: block;
+}
+.hero-stat .label { color: rgba(255,255,255,0.75); font-size: 0.9rem; }
+
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--accent);
+  color: var(--dark);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeDown 0.8s 0.6s ease both;
+  box-shadow: 0 8px 30px rgba(82,183,136,0.4);
+}
+.btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(82,183,136,0.5); }
+.btn-hero svg { width: 20px; height: 20px; }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== WHY SECTION ===== */
+.section { padding: 5rem 1.5rem; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 3rem;
+  line-height: 1.2;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.why-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(45,106,79,0.08);
+  border: 1px solid rgba(82,183,136,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.why-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(45,106,79,0.15); }
+
+.why-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+.why-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 0.75rem;
+}
+.why-card p { color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
+
+/* ===== HOW IT WORKS ===== */
+.how-section { background: var(--dark); padding: 5rem 1.5rem; }
+.how-section .section-label { color: var(--light); }
+.how-section .section-title { color: var(--white); }
+
+.steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  min-width: 160px;
+  max-width: 200px;
+  position: relative;
+}
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+.step-num {
+  width: 56px; height: 56px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+.step-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+.step h4 { color: var(--white); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.step p { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+/* ===== FORM ===== */
+.form-section { padding: 5rem 1.5rem; }
+
+.progress-bar-wrap {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  background: var(--pale);
+  border-radius: 50px;
+  height: 8px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mid), var(--accent));
+  border-radius: 50px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.progress-label {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+.form-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 24px rgba(45,106,79,0.07);
+  border: 1px solid rgba(82,183,136,0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.form-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(45,106,79,0.13); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid var(--pale);
+}
+.card-icon-wrap {
+  width: 52px; height: 52px;
+  background: var(--pale);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.card-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+.card-header p { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+.form-row.full { grid-template-columns: 1fr; }
+@media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.field-input-wrap { position: relative; }
+.field-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+}
+.field input, .field select {
+  width: 100%;
+  padding: 0.75rem 0.9rem 0.75rem 2.5rem;
+  border: 2px solid var(--pale);
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(82,183,136,0.15);
+  background: var(--white);
+}
+
+.slider-wrap { margin-top: 0.5rem; }
+.slider-row { display: flex; align-items: center; gap: 0.8rem; }
+.slider-row input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 6px;
+  background: var(--pale);
+  border-radius: 50px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+.slider-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(82,183,136,0.4);
+}
+.slider-val {
+  min-width: 52px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+  background: var(--pale);
+  border-radius: 8px;
+  padding: 0.2rem 0.5rem;
+}
+
+/* ===== CTA BUTTON ===== */
+.btn-calc {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 1.1rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 30px rgba(45,106,79,0.3);
+  letter-spacing: 0.02em;
+}
+.btn-calc:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(45,106,79,0.4); }
+.btn-calc:active { transform: translateY(0); }
+
+/* ===== RESULTS ===== */
+#results { display: none; padding: 0 1.5rem 5rem; }
+
+.result-hero {
+  max-width: 720px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+  border-radius: 28px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.result-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: rgba(149,213,178,0.1);
+  border-radius: 50%;
+}
+.result-label-top { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--light); margin-bottom: 0.5rem; font-weight: 700; }
+.result-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 12vw, 6rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.result-unit { font-size: 1.2rem; color: var(--light); margin-bottom: 1.5rem; }
+
+.result-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.badge-great { background: rgba(82,183,136,0.25); color: #95d5b2; border: 1px solid rgba(82,183,136,0.4); }
+.badge-good { background: rgba(233,196,106,0.25); color: #f4d03f; border: 1px solid rgba(233,196,106,0.4); }
+.badge-above { background: rgba(231,111,81,0.2); color: #f0b27a; border: 1px solid rgba(231,111,81,0.3); }
+.badge-critical { background: rgba(231,111,81,0.3); color: #f1948a; border: 1px solid rgba(231,111,81,0.5); }
+
+/* Charts area */
+.results-grid {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+@media(max-width: 580px) { .results-grid { grid-template-columns: 1fr; } }
+
+.result-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(45,106,79,0.07);
+  border: 1px solid rgba(82,183,136,0.1);
+}
+.result-card.full { grid-column: 1 / -1; }
+.result-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+}
+
+.chart-container { position: relative; height: 200px; }
+
+/* Comparison bars */
+.compare-row { margin-bottom: 1rem; }
+.compare-row:last-child { margin-bottom: 0; }
+.compare-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+.compare-name { font-size: 0.82rem; font-weight: 700; color: var(--muted); }
+.compare-val { font-size: 0.82rem; font-weight: 700; color: var(--dark); }
+.compare-track { background: var(--pale); border-radius: 50px; height: 10px; overflow: hidden; }
+.compare-fill { height: 100%; border-radius: 50px; transition: width 1s ease; }
+
+/* Fun facts */
+.facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+@media(max-width: 400px) { .facts-grid { grid-template-columns: 1fr; } }
+.fact-item {
+  background: var(--pale);
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: center;
+}
+.fact-icon { font-size: 1.8rem; display: block; margin-bottom: 0.4rem; }
+.fact-text { font-size: 0.8rem; color: var(--text); font-weight: 600; line-height: 1.4; }
+
+/* ===== TIPS ===== */
+.tips-section { max-width: 720px; margin: 0 auto; padding: 0 0 5rem; }
+.tips-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.tip-card {
+  background: var(--white);
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 20px rgba(45,106,79,0.07);
+  border: 1px solid rgba(82,183,136,0.1);
+  overflow: hidden;
+}
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tip-header:hover { background: var(--pale); }
+.tip-icon-wrap {
+  width: 44px; height: 44px;
+  background: var(--pale);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.tip-header-text { flex: 1; }
+.tip-header-text h4 { font-weight: 700; color: var(--dark); font-size: 0.95rem; }
+.tip-saving {
+  font-size: 0.75rem;
+  color: var(--mid);
+  font-weight: 700;
+  background: var(--pale);
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+.tip-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.8rem; margin-left: 0.5rem; }
+.tip-card.open .tip-arrow { transform: rotate(180deg); }
+.tip-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.tip-body-inner { padding: 0 1.5rem 1.2rem; color: var(--muted); font-size: 0.9rem; line-height: 1.6; border-top: 1px solid var(--pale); padding-top: 1rem; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--dark);
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+.footer-molecule { margin-bottom: 1.5rem; }
+.footer-molecule svg { animation: spin 20s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+footer p { font-size: 0.85rem; line-height: 1.8; }
+footer strong { color: var(--light); }
+footer a { color: var(--accent); text-decoration: none; }
+
+/* Show animation */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-up { animation: slideUp 0.6s ease both; }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="particles" id="particles"></div>
+  <div class="hero-badge">🌍 Конкурс «Большие вызовы» 2025/2026</div>
+  <h1 class="hero-title">Эко<span>След</span><br>РФ</h1>
+  <p class="hero-subtitle">Узнай свой личный вклад в изменение климата и получи персональные рекомендации по его снижению</p>
+  <div class="hero-stat">
+    <span class="num" id="hero-counter">0</span>
+    <span class="label">тонн CO₂ в год — средний след россиянина</span>
+  </div>
+  <a href="#calculator" class="btn-hero" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'});return false;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    Рассчитать мой след
+  </a>
+  <div class="hero-scroll">▼ листай вниз</div>
+</section>
+
+<!-- ===== WHY ===== -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">почему это важно</p>
+    <h2 class="section-title">Климат меняется.<br>Начни с себя.</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-icon">🌡️</span>
+        <h3>Россия теплеет в 2.5× быстрее</h3>
+        <p>Среднегодовая температура на территории РФ растёт примерно в 2.5 раза быстрее, чем в среднем по планете, согласно данным Росгидромета.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🏭</span>
+        <h3>11–12 тонн CO₂ на человека</h3>
+        <p>Такой углеродный след у среднего россиянина в год — в 2.5 раза выше мирового среднего в 4.7 тонны и в 6 раз выше цели Парижского соглашения.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🌿</span>
+        <h3>Каждый может снизить след на 20–30%</h3>
+        <p>Изменение транспортных привычек, рациона питания и бытового потребления энергии позволяет существенно сократить личные выбросы уже сегодня.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how-section">
+  <div class="section-inner">
+    <p class="section-label">как это работает</p>
+    <h2 class="section-title">Четыре шага до результата</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🚗</div>
+        <h4>Транспорт</h4>
+        <p>Авто и общ. транспорт</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🥩</div>
+        <h4>Питание</h4>
+        <p>Тип рациона</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏠</div>
+        <h4>ЖКХ</h4>
+        <p>Свет, газ, тепло</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon">✈️</div>
+        <h4>Перелёты</h4>
+        <p>Авиация</p>
+      </div>
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-icon">📊</div>
+        <h4>Результат</h4>
+        <p>С рекомендациями</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORM ===== -->
+<section class="form-section" id="calculator">
+  <div class="section-inner">
+    <p class="section-label">расчёт</p>
+    <h2 class="section-title">Заполни форму</h2>
+
+    <p class="progress-label" id="progress-label">Заполнено разделов: 0 из 4</p>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+
+    <!-- TRANSPORT -->
+    <div class="form-card" data-section="transport">
+      <div class="card-header">
+        <div class="card-icon-wrap">🚗</div>
+        <div>
+          <h2>Транспорт</h2>
+          <p>Личный и общественный транспорт</p>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Авто, км/неделю</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="1000" step="10" value="0" id="car-km-slider">
+              <span class="slider-val" id="car-km-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">📍</span>
+            <input type="number" id="car-km" min="0" value="0" placeholder="км/неделю">
+          </div>
+        </div>
+        <div class="field">
+          <label>Тип двигателя</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">⚙️</span>
+            <select id="car-type">
+              <option value="petrol">Бензин (0.21 кг/км)</option>
+              <option value="diesel">Дизель (0.17 кг/км)</option>
+              <option value="electric">Электро (0.05 кг/км)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Общ. транспорт, часов/неделю</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="40" step="1" value="0" id="transit-slider">
+              <span class="slider-val" id="transit-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">🚌</span>
+            <input type="number" id="transit" min="0" value="0" placeholder="часов/неделю">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOD -->
+    <div class="form-card" data-section="food">
+      <div class="card-header">
+        <div class="card-icon-wrap">🥩</div>
+        <div>
+          <h2>Питание</h2>
+          <p>Мясной рацион — один из главных источников CO₂</p>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Потребление мяса</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">🍽️</span>
+            <select id="meat">
+              <option value="daily">Ежедневно (3.3 кг CO₂/день)</option>
+              <option value="several">Несколько раз в неделю (2.5 кг CO₂/день)</option>
+              <option value="rarely">Редко (1.7 кг CO₂/день)</option>
+              <option value="veg">Вегетарианство (1.0 кг CO₂/день)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="form-card" data-section="home">
+      <div class="card-header">
+        <div class="card-icon-wrap">🏠</div>
+        <div>
+          <h2>Энергия дома</h2>
+          <p>Электричество, газ и площадь квартиры</p>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Электричество, кВт·ч/мес</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="1000" step="10" value="0" id="elec-slider">
+              <span class="slider-val" id="elec-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">⚡</span>
+            <input type="number" id="electricity" min="0" value="0" placeholder="кВт·ч/мес">
+          </div>
+        </div>
+        <div class="field">
+          <label>Газ, м³/мес</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="200" step="5" value="0" id="gas-slider">
+              <span class="slider-val" id="gas-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">🔥</span>
+            <input type="number" id="gas" min="0" value="0" placeholder="м³/мес">
+          </div>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Площадь квартиры, м²</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">📐</span>
+            <input type="number" id="area" min="0" value="0" placeholder="м²">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLIGHTS -->
+    <div class="form-card" data-section="flights">
+      <div class="card-header">
+        <div class="card-icon-wrap">✈️</div>
+        <div>
+          <h2>Авиаперелёты</h2>
+          <p>Один перелёт может равняться месяцам вождения</p>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Перелётов в год</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="30" step="1" value="0" id="flights-slider">
+              <span class="slider-val" id="flights-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">🛫</span>
+            <input type="number" id="flights" min="0" value="0" placeholder="перелётов/год">
+          </div>
+        </div>
+        <div class="field">
+          <label>Средняя длительность, ч</label>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <input type="range" min="0" max="20" step="0.5" value="0" id="flight-hours-slider">
+              <span class="slider-val" id="flight-hours-val">0</span>
+            </div>
+          </div>
+          <div class="field-input-wrap" style="margin-top:0.5rem">
+            <span class="field-icon">⏱️</span>
+            <input type="number" id="flight-hours" min="0" step="0.5" value="0" placeholder="часов">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-calc" onclick="calculate()">🌱 Рассчитать мой углеродный след</button>
+  </div>
+</section>
+
+<!-- ===== RESULTS ===== -->
+<section id="results">
+  <div class="result-hero slide-up">
+    <p class="result-label-top">Ваш углеродный след</p>
+    <div class="result-number" id="result-num">0</div>
+    <div class="result-unit">тонн CO₂ в год</div>
+    <div class="result-badge" id="result-badge"></div>
+  </div>
+
+  <div class="results-grid">
+    <!-- Donut chart -->
+    <div class="result-card">
+      <h3>📊 По категориям</h3>
+      <div class="chart-container">
+        <canvas id="donutChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Fun facts -->
+    <div class="result-card">
+      <h3>🔢 Это эквивалентно...</h3>
+      <div class="facts-grid" id="facts-grid"></div>
+    </div>
+
+    <!-- Comparison -->
+    <div class="result-card full">
+      <h3>📏 Сравнение со средними показателями</h3>
+      <div id="compare-bars"></div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-section" id="tips-section">
+    <h2>💡 Персональные рекомендации</h2>
+    <div id="tips-list"></div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-molecule">
+    <svg width="60" height="60" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="8" fill="#52b788" opacity="0.8"/>
+      <circle cx="10" cy="15" r="5" fill="#95d5b2" opacity="0.6"/>
+      <circle cx="50" cy="15" r="5" fill="#95d5b2" opacity="0.6"/>
+      <circle cx="10" cy="45" r="5" fill="#95d5b2" opacity="0.6"/>
+      <circle cx="50" cy="45" r="5" fill="#95d5b2" opacity="0.6"/>
+      <line x1="30" y1="30" x2="10" y2="15" stroke="#52b788" stroke-width="1.5" opacity="0.5"/>
+      <line x1="30" y1="30" x2="50" y2="15" stroke="#52b788" stroke-width="1.5" opacity="0.5"/>
+      <line x1="30" y1="30" x2="10" y2="45" stroke="#52b788" stroke-width="1.5" opacity="0.5"/>
+      <line x1="30" y1="30" x2="50" y2="45" stroke="#52b788" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  </div>
+  <p><strong>ЭкоСлед-РФ</strong> — первый российский калькулятор углеродного следа с локализованными коэффициентами</p>
+  <p><strong>Источники данных:</strong> Росгидромет, Минэнерго РФ, IPCC AR6, Greenhouse Gas Protocol</p>
+  <p><strong>Методология:</strong> Scope 3 GHG Protocol · Коэффициент ЕЭС России: 0.35 кг CO₂/кВт·ч (2023)</p>
+  <p style="margin-top:1.5rem; font-size:0.95rem">📊 Проект разработан в рамках конкурса <strong>«Большие вызовы»</strong> 2025/2026</p>
+  <p>Автор: <strong>Тихонов Кирилл</strong>, 11С класс · Научный руководитель: Редько Е.В.</p>
+  <p style="margin-top:1rem; opacity:0.7; font-size:0.85rem">© 2026 ЭкоСлед-РФ · Все данные актуальны на февраль 2026 года</p>
+</footer>
+
+<script>
+// ===== PARTICLES =====
+(function(){
+  const container = document.getElementById('particles');
+  for(let i = 0; i < 18; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*60+20;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ===== HERO COUNTER =====
+(function(){
+  const el = document.getElementById('hero-counter');
+  let v = 0; const target = 11;
+  const t = setInterval(()=>{
+    v += 0.2;
+    el.textContent = v.toFixed(1);
+    if(v >= target){ el.textContent = target; clearInterval(t); }
+  }, 50);
+})();
+
+// ===== SLIDER SYNC =====
+function syncSlider(sliderId, inputId, valId){
+  const slider = document.getElementById(sliderId);
+  const input = document.getElementById(inputId);
+  const val = document.getElementById(valId);
+  slider.addEventListener('input', ()=>{ input.value = slider.value; val.textContent = slider.value; updateProgress(); });
+  input.addEventListener('input', ()=>{ slider.value = Math.min(input.value, slider.max); val.textContent = slider.value; updateProgress(); });
+}
+syncSlider('car-km-slider','car-km','car-km-val');
+syncSlider('transit-slider','transit','transit-val');
+syncSlider('elec-slider','electricity','elec-val');
+syncSlider('gas-slider','gas','gas-val');
+syncSlider('flights-slider','flights','flights-val');
+syncSlider('flight-hours-slider','flight-hours','flight-hours-val');
+
+// Also trigger progress on select/input change
+document.querySelectorAll('select, input[type=number]').forEach(el=>{
+  el.addEventListener('change', updateProgress);
+});
+
+// ===== PROGRESS =====
+function updateProgress(){
+  const sections = ['transport','food','home','flights'];
+  let filled = 0;
+  const vals = {
+    transport: +document.getElementById('car-km').value + +document.getElementById('transit').value,
+    food: document.getElementById('meat').value !== 'daily' ? 1 : 0,
+    home: +document.getElementById('electricity').value + +document.getElementById('gas').value,
+    flights: +document.getElementById('flights').value
+  };
+  sections.forEach(s=>{ if(vals[s] > 0 || s==='food') filled++; });
+  // food always counts since it has a default
+  filled = 0;
+  if(+document.getElementById('car-km').value>0 || +document.getElementById('transit').value>0) filled++;
+  filled++; // food always filled
+  if(+document.getElementById('electricity').value>0 || +document.getElementById('gas').value>0) filled++;
+  if(+document.getElementById('flights').value>0) filled++;
+  document.getElementById('progress-fill').style.width = (filled/4*100)+'%';
+  document.getElementById('progress-label').textContent = `Заполнено разделов: ${filled} из 4`;
+}
+updateProgress();
+
+// ===== CALCULATION =====
+const coeffs = {
+  petrol: 0.21, diesel: 0.17, electric: 0.05,
+  transit: 0.089,
+  meat: { daily:3.3, several:2.5, rarely:1.7, veg:1.0 },
+  electricity: 0.35,
+  gas: 2.0,
+  flight: 0.255, flightSpeed: 800
+};
+
+let donutChart = null;
+
+function calculate(){
+  const carKm = +document.getElementById('car-km').value || 0;
+  const carType = document.getElementById('car-type').value;
+  const transit = +document.getElementById('transit').value || 0;
+  const meat = document.getElementById('meat').value;
+  const electricity = +document.getElementById('electricity').value || 0;
+  const gas = +document.getElementById('gas').value || 0;
+  const flights = +document.getElementById('flights').value || 0;
+  const flightHours = +document.getElementById('flight-hours').value || 0;
+
+  const transportKg = (carKm * coeffs[carType] + transit * coeffs.transit) * 52;
+  const foodKg = coeffs.meat[meat] * 365;
+  const homeKg = (electricity * coeffs.electricity + gas * coeffs.gas) * 12;
+  const flightKg = flights * flightHours * coeffs.flightSpeed * coeffs.flight;
+
+  const totalKg = transportKg + foodKg + homeKg + flightKg;
+  const totalT = totalKg / 1000;
+
+  // Show results
+  const resultsEl = document.getElementById('results');
+  resultsEl.style.display = 'block';
+  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Animate number
+  const numEl = document.getElementById('result-num');
+  let cur = 0;
+  const step = totalT / 60;
+  const anim = setInterval(()=>{
+    cur += step;
+    numEl.textContent = cur.toFixed(2);
+    if(cur >= totalT){ numEl.textContent = totalT.toFixed(2); clearInterval(anim); }
+  }, 20);
+
+  // Badge
+  const badge = document.getElementById('result-badge');
+  if(totalT < 6){
+    badge.className = 'result-badge badge-great';
+    badge.textContent = '🟢 Отлично — ниже нормы!';
+  } else if(totalT < 10){
+    badge.className = 'result-badge badge-good';
+    badge.textContent = '🟡 Хорошо — есть куда расти';
+  } else if(totalT < 14){
+    badge.className = 'result-badge badge-above';
+    badge.textContent = '🟠 Выше нормы';
+  } else {
+    badge.className = 'result-badge badge-critical';
+    badge.textContent = '🔴 Критично — пора действовать';
+  }
+
+  // Donut chart
+  if(donutChart) donutChart.destroy();
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['🚗 Транспорт','🥩 Питание','🏠 ЖКХ','✈️ Перелёты'],
+      datasets:[{
+        data: [transportKg/1000, foodKg/1000, homeKg/1000, flightKg/1000].map(v=>+v.toFixed(2)),
+        backgroundColor: ['#2d6a4f','#52b788','#95d5b2','#d8f3dc'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'bottom', labels:{ font:{family:'Nunito',size:11}, padding:10 } }
+      },
+      cutout: '65%'
+    }
+  });
+
+  // Comparison bars
+  const comparisons = [
+    { name: 'Вы', val: totalT, color: totalT<8?'#52b788':totalT<14?'#e9c46a':'#e76f51' },
+    { name: 'Средний россиянин', val: 11, color: '#95d5b2' },
+    { name: 'Среднемировой', val: 4.7, color: '#b7e4c7' },
+    { name: 'Цель Парижского соглашения', val: 2, color: '#d8f3dc' },
+  ];
+  const maxVal = Math.max(totalT, 11, 4.7, 2) * 1.15;
+  document.getElementById('compare-bars').innerHTML = comparisons.map(c=>`
+    <div class="compare-row">
+      <div class="compare-top">
+        <span class="compare-name">${c.name}</span>
+        <span class="compare-val">${c.val.toFixed(1)} т CO₂</span>
+      </div>
+      <div class="compare-track">
+        <div class="compare-fill" style="width:${(c.val/maxVal*100).toFixed(1)}%;background:${c.color}"></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Fun facts
+  const trees = Math.round(totalT * 45);
+  const carKmEq = Math.round(totalT * 1000 / 0.21);
+  const flights_eq = Math.round(totalT * 1000 / (3 * 800 * 0.255));
+  const burgers = Math.round(totalT * 1000 / 3.5);
+  document.getElementById('facts-grid').innerHTML = `
+    <div class="fact-item"><span class="fact-icon">🌳</span><span class="fact-text">Нужно посадить <strong>${trees}</strong> деревьев для компенсации</span></div>
+    <div class="fact-item"><span class="fact-icon">🚗</span><span class="fact-text">Как проехать <strong>${carKmEq.toLocaleString()}</strong> км на бензине</span></div>
+    <div class="fact-item"><span class="fact-icon">✈️</span><span class="fact-text">Как совершить <strong>${flights_eq}</strong> перелётов Москва–Сочи</span></div>
+    <div class="fact-item"><span class="fact-icon">🍔</span><span class="fact-text">Как съесть <strong>${burgers.toLocaleString()}</strong> бургеров с говядиной</span></div>
+  `;
+
+  // Tips
+  const cats = [
+    { key:'transport', val: transportKg, tips: allTips.transport },
+    { key:'food', val: foodKg, tips: allTips.food },
+    { key:'home', val: homeKg, tips: allTips.home },
+    { key:'flights', val: flightKg, tips: allTips.flights },
+  ];
+  cats.sort((a,b)=>b.val-a.val);
+  const shownTips = [];
+  cats.forEach(c=>{ if(c.tips && shownTips.length<4) shownTips.push(...c.tips.slice(0, 2-shownTips.length/2|0)); });
+  const tipsEl = document.getElementById('tips-list');
+  tipsEl.innerHTML = shownTips.slice(0,4).map((t,i)=>`
+    <div class="tip-card" id="tip-${i}">
+      <div class="tip-header" onclick="toggleTip(${i})">
+        <div class="tip-icon-wrap">${t.icon}</div>
+        <div class="tip-header-text">
+          <h4>${t.title}</h4>
+        </div>
+        <span class="tip-saving">−${t.saving}</span>
+        <span class="tip-arrow">▼</span>
+      </div>
+      <div class="tip-body" id="tip-body-${i}">
+        <div class="tip-body-inner">${t.text}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTip(i){
+  const card = document.getElementById('tip-'+i);
+  const body = document.getElementById('tip-body-'+i);
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  body.style.maxHeight = isOpen ? '0' : body.scrollHeight+32+'px';
+}
+
+const allTips = {
+  transport: [
+    { icon:'🚲', title:'Пересядь на велосипед или самокат', saving:'до 300 кг CO₂/год', text:'Для поездок до 5 км велосипед или электросамокат полностью заменяет автомобиль. Это не только снижает выбросы, но и экономит деньги на топливо и парковку.' },
+    { icon:'🚇', title:'Используй общественный транспорт', saving:'до 1.5 т CO₂/год', text:'Метро и автобус выбрасывают в 5–10 раз меньше CO₂ на пассажира, чем личный бензиновый автомобиль. Даже 2 дня в неделю без машины дают ощутимый эффект.' },
+  ],
+  food: [
+    { icon:'🥗', title:'Сократи потребление говядины', saving:'до 500 кг CO₂/год', text:'Производство 1 кг говядины создаёт в 20 раз больше выбросов, чем 1 кг курицы. Замена говядины на птицу или бобовые 3 раза в неделю даёт значительный эффект.' },
+    { icon:'🌱', title:'Попробуй один вегетарианский день в неделю', saving:'до 250 кг CO₂/год', text:'«Постный понедельник» — простая привычка, которая за год снижает углеродный след от питания на 10–15% без радикального изменения рациона.' },
+  ],
+  home: [
+    { icon:'💡', title:'Перейди на LED-лампочки', saving:'до 80 кг CO₂/год', text:'LED-лампы потребляют в 5–8 раз меньше электричества, чем лампы накаливания. Полная замена освещения в квартире окупается за 6–12 месяцев.' },
+    { icon:'🌡️', title:'Снизь температуру отопления на 1°C', saving:'до 200 кг CO₂/год', text:'Снижение температуры в квартире с 22°C до 20°C сокращает потребление тепловой энергии примерно на 6%. Плед и тёплый свитер помогут не замёрзнуть.' },
+  ],
+  flights: [
+    { icon:'🚂', title:'Замени короткие перелёты поездом', saving:'до 400 кг CO₂/рейс', text:'Поезд выбрасывает в 10–20 раз меньше CO₂, чем самолёт. Маршруты до 800 км — Москва–Петербург, Москва–Нижний Новгород — комфортнее ехать в фирменном поезде.' },
+    { icon:'🌍', title:'Компенсируй выбросы от перелётов', saving:'100% компенсация', text:'Ряд российских организаций позволяет компенсировать выбросы от авиаперелётов через посадку деревьев. Это не идеальное решение, но лучше, чем ничего.' },
+  ],
+};
+</script>
+</body>
+</html>

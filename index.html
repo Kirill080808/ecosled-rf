@@ -595,6 +595,175 @@ footer a { color: var(--accent); text-decoration: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 .slide-up { animation: slideUp 0.6s ease both; }
+
+/* ===== REGION BADGE ===== */
+.region-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--pale); color: var(--primary);
+  font-size: 0.75rem; font-weight: 700;
+  padding: 0.25rem 0.75rem; border-radius: 50px;
+  margin-left: 0.6rem; vertical-align: middle;
+}
+
+/* ===== METHODOLOGY SECTION ===== */
+.method-wrap {
+  max-width: 720px; margin: 0 auto 2rem;
+  border: 1px solid rgba(82,183,136,0.2);
+  border-radius: 20px; overflow: hidden;
+}
+.method-toggle {
+  width: 100%; background: var(--white);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.2rem 1.8rem;
+  font-family: 'Nunito', sans-serif;
+  transition: background 0.2s;
+}
+.method-toggle:hover { background: var(--pale); }
+.method-toggle-icon {
+  width: 40px; height: 40px; background: var(--pale);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+}
+.method-toggle-text { flex: 1; text-align: left; }
+.method-toggle-text strong { display: block; color: var(--dark); font-size: 0.95rem; }
+.method-toggle-text span { color: var(--muted); font-size: 0.8rem; }
+.method-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.9rem; }
+.method-wrap.open .method-arrow { transform: rotate(180deg); }
+.method-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.method-body-inner { padding: 0 1.8rem 1.5rem; }
+.coeff-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.8rem 0; }
+.coeff-table th {
+  background: var(--pale); color: var(--dark);
+  padding: 0.6rem 0.8rem; text-align: left;
+  font-weight: 700; font-size: 0.78rem; text-transform: uppercase;
+}
+.coeff-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--pale); color: var(--muted); }
+.coeff-table tr:last-child td { border-bottom: none; }
+.coeff-table td:first-child { font-weight: 700; color: var(--dark); }
+.coeff-source { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+.coeff-source strong { color: var(--primary); }
+
+/* ===== RESULTS ACTIONS ===== */
+.result-actions {
+  max-width: 720px; margin: 0 auto 2rem;
+  display: flex; gap: 1rem; flex-wrap: wrap;
+}
+.btn-share {
+  flex: 1; min-width: 160px;
+  background: var(--white);
+  border: 2px solid var(--accent);
+  color: var(--primary);
+  font-family: 'Nunito', sans-serif; font-weight: 700;
+  font-size: 0.95rem; padding: 0.85rem 1.5rem;
+  border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.btn-share:hover { background: var(--pale); transform: translateY(-2px); }
+.btn-recalc {
+  flex: 1; min-width: 160px;
+  background: var(--pale); border: 2px solid transparent;
+  color: var(--primary);
+  font-family: 'Nunito', sans-serif; font-weight: 700;
+  font-size: 0.95rem; padding: 0.85rem 1.5rem;
+  border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.btn-recalc:hover { background: #c7edd5; transform: translateY(-2px); }
+
+/* ===== SAVINGS BANNER ===== */
+.savings-banner {
+  max-width: 720px; margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, #1a3328 0%, #2d6a4f 100%);
+  border-radius: 20px; padding: 1.5rem 2rem;
+  display: flex; align-items: center; gap: 1.2rem;
+  color: var(--white);
+}
+.savings-icon { font-size: 2.2rem; flex-shrink: 0; }
+.savings-text strong { display: block; font-size: 1rem; color: var(--light); margin-bottom: 0.2rem; }
+.savings-text span { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--dark); color: var(--white);
+  padding: 0.8rem 1.8rem; border-radius: 50px;
+  font-weight: 700; font-size: 0.9rem;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  z-index: 9999; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== EDUCATION SECTION ===== */
+.edu-section { background: var(--dark); padding: 5rem 1.5rem; }
+.edu-section .section-label { color: var(--light); }
+.edu-section .section-title { color: var(--white); }
+
+.paris-card {
+  max-width: 860px; margin: 0 auto 3rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(149,213,178,0.2);
+  border-radius: 24px; padding: 2.5rem;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 2rem; align-items: start;
+}
+@media(max-width:600px){ .paris-card { grid-template-columns: 1fr; } }
+.paris-icon { font-size: 4rem; line-height: 1; }
+.paris-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--light);
+  margin-bottom: 0.75rem;
+}
+.paris-text { color: rgba(255,255,255,0.75); line-height: 1.7; font-size: 0.95rem; }
+.paris-targets {
+  display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;
+}
+.paris-target {
+  background: rgba(82,183,136,0.15); border: 1px solid rgba(82,183,136,0.3);
+  border-radius: 14px; padding: 0.8rem 1.2rem; text-align: center; flex: 1; min-width: 130px;
+}
+.paris-target .pt-num {
+  display: block; font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 900; color: var(--light); line-height: 1;
+}
+.paris-target .pt-label { font-size: 0.78rem; color: rgba(255,255,255,0.65); margin-top: 0.2rem; }
+
+.criteria-grid {
+  max-width: 860px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1.5rem;
+}
+@media(max-width:600px){ .criteria-grid { grid-template-columns: 1fr; } }
+
+.crit-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(149,213,178,0.15);
+  border-radius: 20px; overflow: hidden;
+}
+.crit-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.5rem 1.5rem 1rem;
+}
+.crit-icon-wrap {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(82,183,136,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.crit-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); }
+.crit-share { font-size: 0.78rem; color: var(--light); margin-top: 0.15rem; }
+.crit-body { padding: 0 1.5rem 1.5rem; }
+.crit-body p { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.65; margin-bottom: 0.8rem; }
+.crit-body p:last-child { margin-bottom: 0; }
+.crit-stat {
+  background: rgba(82,183,136,0.12); border-left: 3px solid var(--accent);
+  padding: 0.7rem 1rem; border-radius: 0 10px 10px 0;
+  font-size: 0.83rem; color: rgba(255,255,255,0.85);
+  margin-top: 0.8rem; line-height: 1.5;
+}
+.crit-stat strong { color: var(--light); }
 </style>
 </head>
 <body>
@@ -773,10 +942,24 @@ footer a { color: var(--accent); text-decoration: none; }
         <div class="card-icon-wrap">🏠</div>
         <div>
           <h2>Энергия дома</h2>
-          <p>Электричество, газ и площадь квартиры</p>
+          <p>Электричество, отопление и регион</p>
         </div>
       </div>
       <div class="form-row">
+        <div class="field">
+          <label>Регион <span class="region-badge" id="region-coeff-badge">0.35 кг CO₂/кВт·ч</span></label>
+          <div class="field-input-wrap">
+            <span class="field-icon">📍</span>
+            <select id="region" onchange="updateRegionBadge()">
+              <option value="0.35">Среднее по РФ</option>
+              <option value="0.36">Центральная Россия</option>
+              <option value="0.30">Северо-Запад</option>
+              <option value="0.27">Сибирь и Дальний Восток</option>
+              <option value="0.35">Урал</option>
+              <option value="0.38">Юг России</option>
+            </select>
+          </div>
+        </div>
         <div class="field">
           <label>Электричество, кВт·ч/мес</label>
           <div class="slider-wrap">
@@ -790,6 +973,21 @@ footer a { color: var(--accent); text-decoration: none; }
             <input type="number" id="electricity" min="0" value="0" placeholder="кВт·ч/мес">
           </div>
         </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Тип отопления</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">🔥</span>
+            <select id="heating-type" onchange="toggleHeatingFields()">
+              <option value="central">Централизованное теплоснабжение (ЦТ)</option>
+              <option value="gas">Газовый котёл / плита (м³/мес)</option>
+              <option value="electric">Электрокотёл / нет своего отопления</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="gas-field" class="form-row full" style="display:none">
         <div class="field">
           <label>Газ, м³/мес</label>
           <div class="slider-wrap">
@@ -804,12 +1002,12 @@ footer a { color: var(--accent); text-decoration: none; }
           </div>
         </div>
       </div>
-      <div class="form-row full">
+      <div id="area-field" class="form-row full">
         <div class="field">
-          <label>Площадь квартиры, м²</label>
+          <label>Площадь квартиры, м² (для расчёта ЦТ)</label>
           <div class="field-input-wrap">
             <span class="field-icon">📐</span>
-            <input type="number" id="area" min="0" value="0" placeholder="м²">
+            <input type="number" id="area" min="0" value="0" placeholder="м² — напр., 54">
           </div>
         </div>
       </div>
@@ -855,6 +1053,41 @@ footer a { color: var(--accent); text-decoration: none; }
     </div>
 
     <button class="btn-calc" onclick="calculate()">🌱 Рассчитать мой углеродный след</button>
+
+    <!-- METHODOLOGY -->
+    <div class="method-wrap" id="method-section">
+      <button class="method-toggle" onclick="toggleMethod()">
+        <div class="method-toggle-icon">🔬</div>
+        <div class="method-toggle-text">
+          <strong>Как считается? Методология и источники</strong>
+          <span>Российские эмиссионные коэффициенты · GHG Protocol Scope 3 · Минэнерго, Росстат</span>
+        </div>
+        <span class="method-arrow">▼</span>
+      </button>
+      <div class="method-body" id="method-body">
+        <div class="method-body-inner">
+          <table class="coeff-table">
+            <thead><tr><th>Категория</th><th>Коэффициент</th><th>Источник</th></tr></thead>
+            <tbody>
+              <tr><td>Электроэнергия (ЕЭС РФ)</td><td>0.35 кг CO₂/кВт·ч</td><td>Минэнерго РФ, 2023</td></tr>
+              <tr><td>Природный газ</td><td>2.0 кг CO₂/м³</td><td>IPCC AR6, 2023</td></tr>
+              <tr><td>Централизованное теплоснабжение</td><td>0.0805 т CO₂/м² в год</td><td>СНиП 23-02, Минэнерго РФ</td></tr>
+              <tr><td>Бензин (авто)</td><td>0.21 кг CO₂/км</td><td>Росстат, средний авто РФ</td></tr>
+              <tr><td>Дизель (авто)</td><td>0.17 кг CO₂/км</td><td>Росстат</td></tr>
+              <tr><td>Электромобиль</td><td>0.05 кг CO₂/км</td><td>ЕЭС РФ 0.35 кг/кВт·ч</td></tr>
+              <tr><td>Общественный транспорт</td><td>0.089 кг CO₂/пасс·км</td><td>Минтранс РФ</td></tr>
+              <tr><td>Авиация</td><td>0.255 кг CO₂/пасс·км</td><td>ICAO, 2023</td></tr>
+              <tr><td>Мясной рацион (говядина, ежедн.)</td><td>3.3 кг CO₂/сутки</td><td>ФАО ООН, адаптация для РФ</td></tr>
+              <tr><td>Смешанный рацион</td><td>2.5 кг CO₂/сутки</td><td>ФАО ООН, адаптация для РФ</td></tr>
+              <tr><td>Редкое мясо</td><td>1.7 кг CO₂/сутки</td><td>ФАО ООН, адаптация для РФ</td></tr>
+              <tr><td>Вегетарианский рацион</td><td>1.0 кг CO₂/сутки</td><td>ФАО ООН, адаптация для РФ</td></tr>
+            </tbody>
+          </table>
+          <p class="coeff-source">Методология расчёта: <strong>Greenhouse Gas Protocol Scope 3</strong> (косвенные выбросы от потребления). Все коэффициенты адаптированы для условий РФ с учётом структуры энергобаланса ЕЭС (АЭС — 20%, ГЭС — 17%, ТЭС — 62%, ВИЭ — 1%).</p>
+          <p class="coeff-source">Коэффициент ЦТ рассчитан по формуле: площадь (м²) × 0.35 Гкал/м²·год (СНиП 23-02) × 0.23 т CO₂/Гкал (коэффициент эмиссии для тепловых сетей РФ).</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -865,6 +1098,19 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="result-number" id="result-num">0</div>
     <div class="result-unit">тонн CO₂ в год</div>
     <div class="result-badge" id="result-badge"></div>
+  </div>
+
+  <div class="result-actions slide-up">
+    <button class="btn-share" onclick="shareResult()">📋 Скопировать результат</button>
+    <button class="btn-recalc" onclick="recalculate()">🔄 Пересчитать</button>
+  </div>
+
+  <div class="savings-banner slide-up" id="savings-banner">
+    <div class="savings-icon">💡</div>
+    <div class="savings-text">
+      <strong id="savings-title">Вы можете снизить след на ~30%</strong>
+      <span id="savings-desc">Следуя персональным рекомендациям ниже</span>
+    </div>
   </div>
 
   <div class="results-grid">
@@ -896,6 +1142,110 @@ footer a { color: var(--accent); text-decoration: none; }
   </div>
 </section>
 
+<!-- ===== EDUCATION SECTION ===== -->
+<section class="edu-section">
+  <div class="section-inner">
+    <p class="section-label">почему это важно</p>
+    <h2 class="section-title">Понять климат — значит изменить поведение</h2>
+
+    <!-- Парижское соглашение -->
+    <div class="paris-card">
+      <div class="paris-icon">🌍</div>
+      <div>
+        <div class="paris-title">Парижское соглашение — что это?</div>
+        <p class="paris-text">
+          В 2015 году в Париже 196 стран мира подписали международный договор — <strong style="color:var(--light)">Парижское соглашение по климату</strong>. Это первый в истории юридически обязывающий глобальный документ, направленный на борьбу с изменением климата.
+        </p>
+        <p class="paris-text" style="margin-top:0.8rem">
+          Главная цель: удержать рост средней температуры на Земле в пределах <strong style="color:var(--light)">1.5–2°C</strong> по сравнению с доиндустриальным уровнем. Почему именно столько? При потеплении свыше 2°C риски становятся неуправляемыми: катастрофические наводнения, засухи, исчезновение целых экосистем. Россия подписала и ратифицировала соглашение в 2019 году.
+        </p>
+        <p class="paris-text" style="margin-top:0.8rem">
+          Чтобы достичь этой цели, человечеству нужно снизить выбросы углерода в разы. Для каждого жителя Земли это означает не более <strong style="color:var(--light)">2 тонн CO₂ в год</strong> к 2050 году — сейчас средний россиянин выбрасывает в 5.5 раза больше.
+        </p>
+        <div class="paris-targets">
+          <div class="paris-target"><span class="pt-num">1.5°C</span><span class="pt-label">максимальный допустимый рост температуры</span></div>
+          <div class="paris-target"><span class="pt-num">2 т</span><span class="pt-label">цель: выбросы на человека в год к 2050</span></div>
+          <div class="paris-target"><span class="pt-num">196</span><span class="pt-label">стран подписали соглашение</span></div>
+          <div class="paris-target"><span class="pt-num">2019</span><span class="pt-label">Россия ратифицировала соглашение</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- По каждому критерию -->
+    <div class="criteria-grid">
+
+      <div class="crit-card">
+        <div class="crit-header">
+          <div class="crit-icon-wrap">🚗</div>
+          <div>
+            <div class="crit-title">Транспорт</div>
+            <div class="crit-share">~25–35% углеродного следа среднего россиянина</div>
+          </div>
+        </div>
+        <div class="crit-body">
+          <p>Каждый сожжённый литр бензина — это ~2.4 кг CO₂. Средний легковой автомобиль на бензине выбрасывает 0.21 кг CO₂ на каждый километр пути. За год поездок на работу и по делам это легко набегает в 2–3 тонны.</p>
+          <p>Общественный транспорт делится с десятками пассажиров одновременно, поэтому выбросы на человека в 5–10 раз ниже — 0.089 кг/км. Электромобиль от российской сети даёт 0.05 кг/км: сеть у нас «чище» европейской благодаря атомным и гидростанциям.</p>
+          <div class="crit-stat">
+            <strong>Формула:</strong> (км/неделю × коэф. топлива + часы_транзита × 20 км/ч × 0.089) × 52 недели = кг CO₂ в год
+          </div>
+        </div>
+      </div>
+
+      <div class="crit-card">
+        <div class="crit-header">
+          <div class="crit-icon-wrap">🥩</div>
+          <div>
+            <div class="crit-title">Питание</div>
+            <div class="crit-share">~20–30% углеродного следа — скрытый гигант</div>
+          </div>
+        </div>
+        <div class="crit-body">
+          <p>Производство еды — один из крупнейших источников парниковых газов в мире. Главная причина: животноводство требует выращивания кормов, потребляет огромные количества воды и выделяет метан (в 25 раз мощнее CO₂ по парниковому эффекту).</p>
+          <p>Производство 1 кг говядины создаёт ~27 кг CO₂-эквивалента. Сравните: 1 кг курицы — 6.9 кг, 1 кг тофу — 2 кг, 1 кг чечевицы — 0.9 кг. Если каждый день есть мясо, за год это ~1200 кг CO₂ только от питания.</p>
+          <div class="crit-stat">
+            <strong>Коэффициенты (ФАО ООН, адаптировано для РФ):</strong> ежедневное мясо — 3.3 кг CO₂/сут · несколько раз/неделю — 2.5 · редко — 1.7 · вегетарианство — 1.0
+          </div>
+        </div>
+      </div>
+
+      <div class="crit-card">
+        <div class="crit-header">
+          <div class="crit-icon-wrap">🏠</div>
+          <div>
+            <div class="crit-title">Энергия дома</div>
+            <div class="crit-share">~25–40% — зависит от региона и типа отопления</div>
+          </div>
+        </div>
+        <div class="crit-body">
+          <p>Электричество в вашей розетке производится на станциях, которые сжигают топливо. В России смешанная энергосистема: 62% — тепловые станции (газ, уголь), 20% — атомные, 17% — гидро. Итоговый коэффициент: <strong style="color:var(--light)">0.35 кг CO₂ на каждый кВт·ч</strong>. В Германии этот же показатель — 0.42, в Польше — 0.78: там больше угля.</p>
+          <p>Централизованное теплоснабжение (батареи от городских котелен/ТЭЦ) — особенность российских городов. Его след рассчитывается по площади квартиры и нормативу потребления тепла (0.35 Гкал/м²/год по СНиП 23-02).</p>
+          <div class="crit-stat">
+            <strong>Важно:</strong> Сибирь и Дальний Восток имеют более «чистую» сеть (0.27 кг/кВт·ч) из-за доли ГЭС. Юг России — 0.38 из-за большей доли ТЭС.
+          </div>
+        </div>
+      </div>
+
+      <div class="crit-card">
+        <div class="crit-header">
+          <div class="crit-icon-wrap">✈️</div>
+          <div>
+            <div class="crit-title">Авиаперелёты</div>
+            <div class="crit-share">~0.255 кг CO₂ на пассажиро-километр — самый «дорогой» транспорт</div>
+          </div>
+        </div>
+        <div class="crit-body">
+          <p>Самолёт — самый углеродоёмкий вид транспорта на единицу расстояния. Один рейс Москва–Владивосток (≈6400 км) создаёт около 800 кг CO₂ на пассажира — это почти треть годовой цели Парижского соглашения.</p>
+          <p>Почему так много? Самолёт сжигает авиакеросин на большой высоте, где выбросы оказывают дополнительный нагревающий эффект (воздействие в ~2 раза сильнее из-за образования инверсионных следов и воздействия на озоновый слой). Коэффициент 0.255 кг/пасс·км — стандарт ИКАО (Международная организация гражданской авиации).</p>
+          <div class="crit-stat">
+            <strong>Альтернатива:</strong> поезд Москва–Петербург (650 км) — ~15 кг CO₂ на пассажира, против ~165 кг на самолёте. Разница — 11 раз.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-molecule">
@@ -918,6 +1268,8 @@ footer a { color: var(--accent); text-decoration: none; }
   <p>Автор: <strong>Тихонов Кирилл</strong>, 11С класс · Научный руководитель: Редько Е.В.</p>
   <p style="margin-top:1rem; opacity:0.7; font-size:0.85rem">© 2026 ЭкоСлед-РФ · Все данные актуальны на февраль 2026 года</p>
 </footer>
+
+<div class="toast" id="toast">✅ Результат скопирован!</div>
 
 <script>
 // ===== PARTICLES =====
@@ -968,22 +1320,39 @@ document.querySelectorAll('select, input[type=number]').forEach(el=>{
   el.addEventListener('change', updateProgress);
 });
 
+// ===== REGION BADGE =====
+function updateRegionBadge(){
+  const val = document.getElementById('region').value;
+  document.getElementById('region-coeff-badge').textContent = val + ' кг CO₂/кВт·ч';
+}
+
+// ===== HEATING TYPE TOGGLE =====
+function toggleHeatingFields(){
+  const type = document.getElementById('heating-type').value;
+  document.getElementById('gas-field').style.display = type === 'gas' ? '' : 'none';
+  document.getElementById('area-field').style.display = type === 'central' ? '' : 'none';
+  updateProgress();
+}
+
+// ===== METHODOLOGY TOGGLE =====
+function toggleMethod(){
+  const wrap = document.getElementById('method-section');
+  const body = document.getElementById('method-body');
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open');
+  body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
+}
+
 // ===== PROGRESS =====
 function updateProgress(){
-  const sections = ['transport','food','home','flights'];
   let filled = 0;
-  const vals = {
-    transport: +document.getElementById('car-km').value + +document.getElementById('transit').value,
-    food: document.getElementById('meat').value !== 'daily' ? 1 : 0,
-    home: +document.getElementById('electricity').value + +document.getElementById('gas').value,
-    flights: +document.getElementById('flights').value
-  };
-  sections.forEach(s=>{ if(vals[s] > 0 || s==='food') filled++; });
-  // food always counts since it has a default
-  filled = 0;
   if(+document.getElementById('car-km').value>0 || +document.getElementById('transit').value>0) filled++;
   filled++; // food always filled
-  if(+document.getElementById('electricity').value>0 || +document.getElementById('gas').value>0) filled++;
+  const heatingType = document.getElementById('heating-type').value;
+  const hasElec = +document.getElementById('electricity').value > 0;
+  const hasGas = +document.getElementById('gas').value > 0;
+  const hasArea = +document.getElementById('area').value > 0;
+  if(hasElec || (heatingType==='gas' && hasGas) || (heatingType==='central' && hasArea)) filled++;
   if(+document.getElementById('flights').value>0) filled++;
   document.getElementById('progress-fill').style.width = (filled/4*100)+'%';
   document.getElementById('progress-label').textContent = `Заполнено разделов: ${filled} из 4`;
@@ -993,14 +1362,16 @@ updateProgress();
 // ===== CALCULATION =====
 const coeffs = {
   petrol: 0.21, diesel: 0.17, electric: 0.05,
-  transit: 0.089,
+  transitPerKm: 0.089,
+  transitSpeed: 20, // avg km/h for urban public transit in Russia
   meat: { daily:3.3, several:2.5, rarely:1.7, veg:1.0 },
-  electricity: 0.35,
   gas: 2.0,
-  flight: 0.255, flightSpeed: 800
+  flight: 0.255, flightSpeed: 800,
+  centralHeating: 80.5 // kg CO2 per m² per year (0.35 Gcal/m²/yr × 0.23 tCO2/Gcal × 1000)
 };
 
 let donutChart = null;
+let lastResults = null;
 
 function calculate(){
   const carKm = +document.getElementById('car-km').value || 0;
@@ -1008,17 +1379,31 @@ function calculate(){
   const transit = +document.getElementById('transit').value || 0;
   const meat = document.getElementById('meat').value;
   const electricity = +document.getElementById('electricity').value || 0;
+  const electricityCoeff = +document.getElementById('region').value;
+  const heatingType = document.getElementById('heating-type').value;
   const gas = +document.getElementById('gas').value || 0;
+  const area = +document.getElementById('area').value || 0;
   const flights = +document.getElementById('flights').value || 0;
   const flightHours = +document.getElementById('flight-hours').value || 0;
 
-  const transportKg = (carKm * coeffs[carType] + transit * coeffs.transit) * 52;
+  // FIX: transit was using wrong unit — convert hours/week to km/week via avg speed
+  const transitKmPerWeek = transit * coeffs.transitSpeed;
+  const transportKg = (carKm * coeffs[carType] + transitKmPerWeek * coeffs.transitPerKm) * 52;
   const foodKg = coeffs.meat[meat] * 365;
-  const homeKg = (electricity * coeffs.electricity + gas * coeffs.gas) * 12;
+  const electricityKg = electricity * electricityCoeff * 12;
+  const heatingKg = heatingType === 'gas'
+    ? gas * coeffs.gas * 12
+    : heatingType === 'central'
+      ? area * coeffs.centralHeating
+      : 0;
+  const homeKg = electricityKg + heatingKg;
   const flightKg = flights * flightHours * coeffs.flightSpeed * coeffs.flight;
 
   const totalKg = transportKg + foodKg + homeKg + flightKg;
   const totalT = totalKg / 1000;
+
+  // Save for share
+  lastResults = { totalT, transportKg, foodKg, homeKg, flightKg, electricityKg, heatingKg };
 
   // Show results
   const resultsEl = document.getElementById('results');
@@ -1050,6 +1435,13 @@ function calculate(){
     badge.className = 'result-badge badge-critical';
     badge.textContent = '🔴 Критично — пора действовать';
   }
+
+  // Savings banner
+  const maxSave = Math.round((Math.min(transportKg * 0.5, 1500) + Math.min(foodKg * 0.3, 700) + Math.min(heatingKg * 0.15, 300)) / 10) * 10;
+  const saveT = (maxSave / 1000).toFixed(1);
+  const savePct = Math.round(maxSave / totalKg * 100);
+  document.getElementById('savings-title').textContent = `Вы можете снизить след на ~${savePct}% (≈${saveT} т CO₂)`;
+  document.getElementById('savings-desc').textContent = 'Следуя персональным рекомендациям ниже — без кардинальных изменений образа жизни';
 
   // Donut chart
   if(donutChart) donutChart.destroy();
@@ -1107,16 +1499,26 @@ function calculate(){
     <div class="fact-item"><span class="fact-icon">🍔</span><span class="fact-text">Как съесть <strong>${burgers.toLocaleString()}</strong> бургеров с говядиной</span></div>
   `;
 
-  // Tips
+  // FIX: Tips — take top 2 categories, 1 tip each, then fill to 4 from remaining
   const cats = [
     { key:'transport', val: transportKg, tips: allTips.transport },
-    { key:'food', val: foodKg, tips: allTips.food },
-    { key:'home', val: homeKg, tips: allTips.home },
-    { key:'flights', val: flightKg, tips: allTips.flights },
-  ];
-  cats.sort((a,b)=>b.val-a.val);
+    { key:'food',      val: foodKg,      tips: allTips.food },
+    { key:'home',      val: homeKg,      tips: allTips.home },
+    { key:'flights',   val: flightKg,    tips: allTips.flights },
+  ].sort((a,b) => b.val - a.val);
+
   const shownTips = [];
-  cats.forEach(c=>{ if(c.tips && shownTips.length<4) shownTips.push(...c.tips.slice(0, 2-shownTips.length/2|0)); });
+  // First pass: 1 tip from each category in order until we have 4
+  for(const c of cats){
+    if(shownTips.length >= 4) break;
+    if(c.tips && c.tips.length > 0) shownTips.push(c.tips[0]);
+  }
+  // Second pass: pick second tips from top categories if still < 4
+  for(const c of cats){
+    if(shownTips.length >= 4) break;
+    if(c.tips && c.tips.length > 1) shownTips.push(c.tips[1]);
+  }
+
   const tipsEl = document.getElementById('tips-list');
   tipsEl.innerHTML = shownTips.slice(0,4).map((t,i)=>`
     <div class="tip-card" id="tip-${i}">
@@ -1133,6 +1535,42 @@ function calculate(){
       </div>
     </div>
   `).join('');
+}
+
+// ===== SHARE RESULT =====
+function shareResult(){
+  if(!lastResults) return;
+  const r = lastResults;
+  const text = `🌱 Мой углеродный след (ЭкоСлед-РФ)\n\n` +
+    `📊 Итого: ${r.totalT.toFixed(2)} т CO₂ в год\n` +
+    `🚗 Транспорт: ${(r.transportKg/1000).toFixed(2)} т\n` +
+    `🥩 Питание: ${(r.foodKg/1000).toFixed(2)} т\n` +
+    `🏠 ЖКХ: ${(r.homeKg/1000).toFixed(2)} т\n` +
+    `✈️ Перелёты: ${(r.flightKg/1000).toFixed(2)} т\n\n` +
+    `Средний россиянин — 11 т · Цель Парижского соглашения — 2 т\n` +
+    `Рассчитано на ecosled-rf.ru (Большие вызовы 2025/2026)`;
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('✅ Результат скопирован!');
+  }).catch(()=>{
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ Результат скопирован!');
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+function recalculate(){
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('calculator').scrollIntoView({behavior:'smooth'});
 }
 
 function toggleTip(i){

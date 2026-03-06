@@ -371,7 +371,7 @@ body {
 }
 
 .slider-wrap { margin-top: 0.5rem; }
-.slider-row { display: flex; align-items: center; gap: 0.8rem; }
+.slider-row { display: flex; align-items: center; gap: 0.6rem; }
 .slider-row input[type=range] {
   flex: 1;
   -webkit-appearance: none;
@@ -384,11 +384,25 @@ body {
 }
 .slider-row input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 18px; height: 18px;
+  width: 22px; height: 22px;
   border-radius: 50%;
   background: var(--accent);
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(82,183,136,0.4);
+  border: 2px solid white;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.slider-row input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 14px rgba(82,183,136,0.55);
+}
+.slider-row input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(82,183,136,0.4);
+  border: 2px solid white;
 }
 .slider-val {
   min-width: 52px;
@@ -400,6 +414,139 @@ body {
   border-radius: 8px;
   padding: 0.2rem 0.5rem;
 }
+
+/* +/- Step Buttons */
+.step-btn {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--white);
+  color: var(--primary);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  user-select: none;
+  padding: 0;
+}
+.step-btn:hover { background: var(--pale); transform: scale(1.1); box-shadow: 0 2px 10px rgba(82,183,136,0.3); }
+.step-btn:active { transform: scale(0.95); }
+
+/* Hint/Help blocks inside cards */
+.field-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(82,183,136,0.08), rgba(149,213,178,0.12));
+  border: 1px solid rgba(82,183,136,0.2);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.field-hint .hint-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+.field-hint strong { color: var(--primary); }
+
+/* Section help accordion */
+.section-help {
+  background: rgba(82,183,136,0.06);
+  border: 1px dashed rgba(82,183,136,0.35);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-help-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.4rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: left;
+  transition: background 0.2s;
+}
+.section-help-toggle:hover { background: rgba(82,183,136,0.08); }
+.section-help-toggle .help-badge {
+  background: var(--accent);
+  color: white;
+  font-size: 0.68rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 50px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.section-help-toggle .help-arrow { margin-left: auto; color: var(--muted); font-size: 0.8rem; transition: transform 0.3s; }
+.section-help.open .help-arrow { transform: rotate(180deg); }
+.section-help-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.section-help-inner {
+  padding: 0 1.4rem 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.8rem;
+}
+.help-item {
+  background: white;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(82,183,136,0.15);
+}
+.help-item .hi-title {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--dark);
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.help-item .hi-body { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+.help-item .hi-example {
+  margin-top: 0.45rem;
+  background: var(--pale);
+  border-radius: 8px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Intuitive improvements */
+.card-fill-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  background: var(--pale);
+  color: var(--muted);
+  transition: all 0.3s;
+}
+.card-fill-badge.filled { background: rgba(82,183,136,0.2); color: var(--primary); }
+
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  padding: 0 2px;
+}
+.slider-label-row span:last-child { text-align: right; }
 
 /* ===== CTA BUTTON ===== */
 .btn-calc {
@@ -855,9 +1002,44 @@ footer a { color: var(--accent); text-decoration: none; }
   <div class="section-inner">
     <p class="section-label">расчёт</p>
     <h2 class="section-title">Заполни форму</h2>
+    <p style="text-align:center; color:var(--muted); font-size:0.92rem; max-width:500px; margin: -1.5rem auto 2rem; line-height:1.6;">4 простых раздела — займёт ~3 минуты. Не знаешь точных цифр? Используй подсказки 💡 под полями.</p>
 
     <p class="progress-label" id="progress-label">Заполнено разделов: 0 из 4</p>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+
+    <!-- GLOBAL HELP BLOCK -->
+    <div class="section-help" id="global-help">
+      <button class="section-help-toggle" onclick="toggleHelp('global-help', 'global-help-body')">
+        <span>🤔</span>
+        <span>Не знаешь, что вводить? Читай подсказки</span>
+        <span class="help-badge">для новичков</span>
+        <span class="help-arrow">▼</span>
+      </button>
+      <div class="section-help-body" id="global-help-body">
+        <div class="section-help-inner">
+          <div class="help-item">
+            <div class="hi-title">🚗 Транспорт</div>
+            <div class="hi-body">Если ездишь на машине, попроси родителей посмотреть одометр (он считает километры). За неделю разница = км/нед. Если не знаешь — оцени: до школы 5 км, туда-обратно 10 км × 5 дней = ~50 км/нед.</div>
+            <div class="hi-example">Нет машины? Ставь 0, заполни только общественный транспорт</div>
+          </div>
+          <div class="help-item">
+            <div class="hi-title">🥩 Питание</div>
+            <div class="hi-body">Просто выбери ближайший вариант к своей диете. Ешь мясо почти каждый день → «Ежедневно». Пару раз в неделю → «Несколько раз». Это самое простое поле!</div>
+            <div class="hi-example">Не уверен? Выбери «Несколько раз в неделю» — это средний россиянин</div>
+          </div>
+          <div class="help-item">
+            <div class="hi-title">🏠 Энергия дома</div>
+            <div class="hi-body">Данные об электричестве есть в квитанции ЖКХ — попроси родителей. Или возьми типичное: 150–200 кВт·ч/мес для стандартной квартиры. Площадь квартиры узнай у родителей или найди в документах.</div>
+            <div class="hi-example">Большинство городских квартир: 150 кВт·ч, 50–65 м², центральное отопление</div>
+          </div>
+          <div class="help-item">
+            <div class="hi-title">✈️ Перелёты</div>
+            <div class="hi-body">Вспомни все полёты за последний год: на отдых, к родственникам, на соревнования. Каждый билет — это отдельный перелёт (туда и обратно = 2). Не летал? Смело ставь 0.</div>
+            <div class="hi-example">Слетал на море и обратно = 2 перелёта по ~2.5 часа</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- TRANSPORT -->
     <div class="form-card" data-section="transport">
@@ -873,13 +1055,20 @@ footer a { color: var(--accent); text-decoration: none; }
           <label>Авто, км/неделю</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('car-km-slider','car-km','car-km-val',-10)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="1000" step="10" value="0" id="car-km-slider">
+              <button class="step-btn" onclick="stepSlider('car-km-slider','car-km','car-km-val',10)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="car-km-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0 км</span><span>1 000 км</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">📍</span>
             <input type="number" id="car-km" min="0" value="0" placeholder="км/неделю">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span>Не знаешь сколько ездишь? <strong>Типичные примеры:</strong> школа/работа туда-обратно ~20 км/день → ~100 км/нед. Поездки по городу → ~50–150 км/нед. Пригород → 200–400 км/нед.</span>
           </div>
         </div>
         <div class="field">
@@ -899,13 +1088,20 @@ footer a { color: var(--accent); text-decoration: none; }
           <label>Общ. транспорт, часов/неделю</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('transit-slider','transit','transit-val',-1)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="40" step="1" value="0" id="transit-slider">
+              <button class="step-btn" onclick="stepSlider('transit-slider','transit','transit-val',1)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="transit-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0 ч</span><span>40 ч</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">🚌</span>
             <input type="number" id="transit" min="0" value="0" placeholder="часов/неделю">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span>Суммируй время в метро, автобусе, маршрутке. <strong>Примеры:</strong> 30 мин утром + 30 мин вечером × 5 дней = <strong>5 ч/нед</strong>. Ездишь редко — 1–2 ч/нед.</span>
           </div>
         </div>
       </div>
@@ -931,6 +1127,10 @@ footer a { color: var(--accent); text-decoration: none; }
               <option value="rarely">Редко (1.7 кг CO₂/день)</option>
               <option value="veg">Вегетарианство (1.0 кг CO₂/день)</option>
             </select>
+          </div>
+          <div class="field-hint" style="margin-top:0.5rem">
+            <span class="hint-icon">💡</span>
+            <span><strong>Ежедневно</strong> — мясо на завтрак/обед/ужин почти каждый день. <strong>Несколько раз</strong> — 2–4 раза в нед. <strong>Редко</strong> — 1 раз в нед. или меньше. <strong>Вегетарианство</strong> — мяса нет совсем.</span>
           </div>
         </div>
       </div>
@@ -964,13 +1164,20 @@ footer a { color: var(--accent); text-decoration: none; }
           <label>Электричество, кВт·ч/мес</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('elec-slider','electricity','elec-val',-10)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="1000" step="10" value="0" id="elec-slider">
+              <button class="step-btn" onclick="stepSlider('elec-slider','electricity','elec-val',10)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="elec-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0 кВт·ч</span><span>1 000 кВт·ч</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">⚡</span>
             <input type="number" id="electricity" min="0" value="0" placeholder="кВт·ч/мес">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span>Посмотри в квитанции об оплате ЖКХ (строка «электроэнергия»). <strong>Типично:</strong> 1-комн. кв. → 100–180 кВт·ч, 2-3 комн. → 150–300 кВт·ч. Дели на число людей в квартире.</span>
           </div>
         </div>
       </div>
@@ -992,13 +1199,20 @@ footer a { color: var(--accent); text-decoration: none; }
           <label>Газ, м³/мес</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('gas-slider','gas','gas-val',-5)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="200" step="5" value="0" id="gas-slider">
+              <button class="step-btn" onclick="stepSlider('gas-slider','gas','gas-val',5)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="gas-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0 м³</span><span>200 м³</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">🔥</span>
             <input type="number" id="gas" min="0" value="0" placeholder="м³/мес">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span>Посмотри в квитанции — строка «природный газ». <strong>Типично:</strong> только плита → 5–15 м³/мес, газовое отопление → 30–100 м³/мес. Дели на число людей.</span>
           </div>
         </div>
       </div>
@@ -1008,6 +1222,10 @@ footer a { color: var(--accent); text-decoration: none; }
           <div class="field-input-wrap">
             <span class="field-icon">📐</span>
             <input type="number" id="area" min="0" value="0" placeholder="м² — напр., 54">
+          </div>
+          <div class="field-hint" style="margin-top:0.5rem">
+            <span class="hint-icon">💡</span>
+            <span>Площадь есть в документах на квартиру (выписке из ЕГРН) или в личном кабинете управляющей компании. Спроси у родителей! <strong>Типично:</strong> студия → 25–35 м², однушка → 38–45 м², двушка → 50–65 м².</span>
           </div>
         </div>
       </div>
@@ -1027,26 +1245,40 @@ footer a { color: var(--accent); text-decoration: none; }
           <label>Перелётов в год</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('flights-slider','flights','flights-val',-1)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="30" step="1" value="0" id="flights-slider">
+              <button class="step-btn" onclick="stepSlider('flights-slider','flights','flights-val',1)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="flights-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0</span><span>30 рейсов</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">🛫</span>
             <input type="number" id="flights" min="0" value="0" placeholder="перелётов/год">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span>Считай каждый полёт отдельно: туда и обратно = <strong>2 перелёта</strong>. Не летал вообще? Оставь 0.</span>
           </div>
         </div>
         <div class="field">
           <label>Средняя длительность, ч</label>
           <div class="slider-wrap">
             <div class="slider-row">
+              <button class="step-btn" onclick="stepSlider('flight-hours-slider','flight-hours','flight-hours-val',-0.5)" type="button" aria-label="Уменьшить">−</button>
               <input type="range" min="0" max="20" step="0.5" value="0" id="flight-hours-slider">
+              <button class="step-btn" onclick="stepSlider('flight-hours-slider','flight-hours','flight-hours-val',0.5)" type="button" aria-label="Увеличить">+</button>
               <span class="slider-val" id="flight-hours-val">0</span>
             </div>
+            <div class="slider-label-row"><span>0 ч</span><span>20 ч</span></div>
           </div>
           <div class="field-input-wrap" style="margin-top:0.5rem">
             <span class="field-icon">⏱️</span>
             <input type="number" id="flight-hours" min="0" step="0.5" value="0" placeholder="часов">
+          </div>
+          <div class="field-hint">
+            <span class="hint-icon">💡</span>
+            <span><strong>Примеры:</strong> Москва–СПб ≈ 1.5 ч · Москва–Сочи ≈ 2.5 ч · Москва–Владивосток ≈ 9 ч · Европа ≈ 3–4 ч</span>
           </div>
         </div>
       </div>
@@ -1301,6 +1533,22 @@ footer a { color: var(--accent); text-decoration: none; }
 })();
 
 // ===== SLIDER SYNC =====
+function stepSlider(sliderId, inputId, valId, delta){
+  const slider = document.getElementById(sliderId);
+  const input = document.getElementById(inputId);
+  const val = document.getElementById(valId);
+  let newVal = parseFloat(slider.value) + delta;
+  newVal = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), newVal));
+  // Round to step precision
+  const step = parseFloat(slider.step) || 1;
+  const decimals = (step.toString().split('.')[1] || '').length;
+  newVal = parseFloat(newVal.toFixed(decimals));
+  slider.value = newVal;
+  input.value = newVal;
+  val.textContent = newVal;
+  updateProgress();
+}
+
 function syncSlider(sliderId, inputId, valId){
   const slider = document.getElementById(sliderId);
   const input = document.getElementById(inputId);
@@ -1332,6 +1580,15 @@ function toggleHeatingFields(){
   document.getElementById('gas-field').style.display = type === 'gas' ? '' : 'none';
   document.getElementById('area-field').style.display = type === 'central' ? '' : 'none';
   updateProgress();
+}
+
+// ===== HELP TOGGLE =====
+function toggleHelp(wrapId, bodyId){
+  const wrap = document.getElementById(wrapId);
+  const body = document.getElementById(bodyId);
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open');
+  body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
 }
 
 // ===== METHODOLOGY TOGGLE =====
